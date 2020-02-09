@@ -1,0 +1,61 @@
+type User @entity {
+  id: ID! # userAddress
+  ensName: String
+  timestamp: BigInt!
+}
+
+type Colony @entity {
+  id: ID! # Address
+  ensName: String
+  orbitAddress: String
+  index: BigInt!
+  token: String # Address
+  domains: [Domain!]!
+  timestamp: BigInt!
+}
+
+# Should not be in root query
+type Domain @entity {
+  id: ID! # colonyAddress_domainId
+  colonyAddress: Bytes!
+  index: BigInt!
+  parent: Domain
+  roles: [ColonyRoles!]!
+  timestamp: BigInt!
+}
+
+# Should not be in root query
+type ColonyRoles @entity {
+  id: ID! # colonyAddress_domainId_userAddress
+  user: User!
+  domain: Domain!
+  administration: Boolean!
+  timestamp: BigInt!
+  # TODO: other roles
+}
+
+type Skill @entity {
+  id: ID!
+  index: BigInt!
+  parent: Skill
+  timestamp: BigInt!
+}
+
+type Task @entity {
+  id: ID!
+  colonyAddress: Bytes!
+  taskId: BigInt!
+  status: String
+  timestamp: BigInt!
+}
+
+# enum TaskRole { Manager, Evaluator, Worker }
+type TaskPayout @entity {
+  id: ID!
+  colonyAddress: Bytes!
+  taskId: BigInt!
+  role: Int!
+  token: Bytes!
+  amount: BigInt!
+  timestamp: BigInt!
+}

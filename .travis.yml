@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - 10
+cache:
+  yarn: true
+  directories:
+    - node_modules
+stages:
+  - name: test
+  - name: deploy
+    if: branch = master
+jobs:
+  include:
+    - stage: test
+      script: yarn test
+    - stage: deploy
+      script:
+        - npm run test
+        - npm run deploy --access-token=$THEGRAPH_TOKEN
