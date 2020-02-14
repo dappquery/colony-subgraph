@@ -44,7 +44,7 @@ export function handleColonyRoleSet(event: ColonyRoleSet): void {
   let roles = ColonyRoles.load(event.address.toHex() + '_' + event.params.domainId.toString() + '_' + event.params.user.toHex())
   if (!roles) {
     roles = new ColonyRoles(event.address.toHex() + '_' + event.params.domainId.toString() + '_' + event.params.user.toHex())
-    roles.user = event.params.user.toHex()
+    roles.user = event.params.user
     roles.domain = event.address.toHex() + '_' + event.params.domainId.toString()
   }
 
@@ -140,7 +140,7 @@ export function handleTaskCanceled(event: TaskCanceled): void {}
 export function handleDomainAdded(event: DomainAdded): void {
   let domain = new Domain(event.address.toHex() + '_' + event.params.domainId.toString())
   domain.index = event.params.domainId
-  domain.parent = event.address.toHex() + '_1'
+  domain.parent = event.address
   domain.colonyAddress = event.address
   domain.timestamp = event.block.timestamp
   domain.save()

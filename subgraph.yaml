@@ -16,40 +16,15 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Colony
-        - Skill
         - User
       abis:
         - name: IColonyNetwork
           file: ./abis/IColonyNetwork.json
       eventHandlers:
-        - event: ColonyNetworkInitialised(address)
-          handler: handleColonyNetworkInitialised
-        - event: TokenLockingAddressSet(address)
-          handler: handleTokenLockingAddressSet
-        - event: MiningCycleResolverSet(address)
-          handler: handleMiningCycleResolverSet
-        - event: NetworkFeeInverseSet(uint256)
-          handler: handleNetworkFeeInverseSet
-        - event: ColonyVersionAdded(uint256,address)
-          handler: handleColonyVersionAdded
-        - event: MetaColonyCreated(address,address,uint256)
-          handler: handleMetaColonyCreated
         - event: ColonyAdded(indexed uint256,indexed address,address)
           handler: handleColonyAdded
-        - event: SkillAdded(uint256,uint256)
-          handler: handleSkillAdded
-        - event: AuctionCreated(address,address,uint256)
-          handler: handleAuctionCreated
-        - event: ReputationMiningInitialised(address)
-          handler: handleReputationMiningInitialised
-        - event: ReputationMiningCycleComplete(bytes32,uint256)
-          handler: handleReputationMiningCycleComplete
-        - event: ReputationRootHashSet(bytes32,uint256,address[],uint256)
-          handler: handleReputationRootHashSet
         - event: UserLabelRegistered(indexed address,bytes32)
           handler: handleUserLabelRegistered
-        - event: ColonyLabelRegistered(indexed address,bytes32)
-          handler: handleColonyLabelRegistered
       file: ./src/mappings/colonyNetwork.ts
 templates:
   - name: Colony
@@ -64,62 +39,17 @@ templates:
       file: ./src/mappings/colony.ts
       entities:
         - Domain
-        - ColonyRoles
         - Task
         - TaskPayout
       abis:
         - name: IColony
           file: ./abis/IColony.json
       eventHandlers:
-        - event: ColonyInitialised(address,address)
-          handler: handleColonyInitialised
-        - event: ColonyBootstrapped(address[],int256[])
-          handler: handleColonyBootstrapped
-        - event: ColonyUpgraded(uint256,uint256)
-          handler: handleColonyUpgraded
-        - event: ColonyRoleSet(indexed address,indexed uint256,indexed uint8,bool)
-          handler: handleColonyRoleSet
-        - event: ColonyFundsMovedBetweenFundingPots(indexed uint256,indexed uint256,uint256,address)
-          handler: handleColonyFundsMovedBetweenFundingPots
-        - event: ColonyFundsClaimed(address,uint256,uint256)
-          handler: handleColonyFundsClaimed
-        - event: RewardPayoutCycleStarted(uint256)
-          handler: handleRewardPayoutCycleStarted
-        - event: RewardPayoutCycleEnded(uint256)
-          handler: handleRewardPayoutCycleEnded
-        - event: RewardPayoutClaimed(uint256,address,uint256,uint256)
-          handler: handleRewardPayoutClaimed
-        - event: ColonyRewardInverseSet(uint256)
-          handler: handleColonyRewardInverseSet
-        - event: PaymentAdded(uint256)
-          handler: handlePaymentAdded
         - event: TaskAdded(uint256)
           handler: handleTaskAdded
-        - event: TaskBriefSet(indexed uint256,bytes32)
-          handler: handleTaskBriefSet
-        - event: TaskDueDateSet(indexed uint256,uint256)
-          handler: handleTaskDueDateSet
-        - event: TaskDomainSet(indexed uint256,indexed uint256)
-          handler: handleTaskDomainSet
-        - event: TaskSkillSet(indexed uint256,indexed uint256)
-          handler: handleTaskSkillSet
-        - event: TaskRoleUserSet(indexed uint256,uint8,indexed address)
-          handler: handleTaskRoleUserSet
         - event: TaskPayoutSet(indexed uint256,uint8,address,uint256)
           handler: handleTaskPayoutSet
-        - event: TaskDeliverableSubmitted(indexed uint256,bytes32)
-          handler: handleTaskDeliverableSubmitted
-        - event: TaskCompleted(indexed uint256)
-          handler: handleTaskCompleted
-        - event: TaskWorkRatingRevealed(indexed uint256,uint8,uint8)
-          handler: handleTaskWorkRatingRevealed
         - event: TaskFinalized(indexed uint256)
           handler: handleTaskFinalized
-        - event: PayoutClaimed(indexed uint256,address,uint256)
-          handler: handlePayoutClaimed
-        - event: TaskCanceled(indexed uint256)
-          handler: handleTaskCanceled
         - event: DomainAdded(uint256)
           handler: handleDomainAdded
-        - event: FundingPotAdded(uint256)
-          handler: handleFundingPotAdded

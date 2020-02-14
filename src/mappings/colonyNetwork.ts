@@ -18,7 +18,7 @@ import {
 } from '../../generated/ColonyNetwork/IColonyNetwork'
 
 import { Colony, Domain, ColonyRoles, User } from '../../generated/schema'
-// import { Colony as ColonyTemplate } from '../../generated/templates/Colony/IColony'
+import { IColony as ColonyTemplate } from '../../generated/templates/Colony/IColony'
 
 export function handleColonyNetworkInitialised(
   event: ColonyNetworkInitialised
@@ -39,28 +39,27 @@ export function handleColonyVersionAdded(event: ColonyVersionAdded): void {}
 export function handleMetaColonyCreated(event: MetaColonyCreated): void {}
 
 export function handleColonyAdded(event: ColonyAdded): void {
-  let creatorRoles = new ColonyRoles(event.params.colonyAddress.toHex() + '_1_' + event.transaction.from.toHex())
-  creatorRoles.user = event.transaction.from.toHex()
-  creatorRoles.domain = event.params.colonyAddress.toHex() + '_1'
-  creatorRoles.administration = true
-  creatorRoles.timestamp = event.block.timestamp
-  creatorRoles.save()
+  // let creatorRoles = new ColonyRoles(event.params.colonyAddress.toHex() + '_1_' + event.transaction.from.toHex())
+  // creatorRoles.user = event.transaction.from
+  // creatorRoles.domain = event.params.colonyAddress.toHex() + '_1'
+  // creatorRoles.administration = true
+  // creatorRoles.timestamp = event.block.timestamp
+  // creatorRoles.save()
 
-  let rootDomain = new Domain(event.params.colonyAddress.toHex() + '_1')
-  rootDomain.colonyAddress = event.params.colonyAddress
-  rootDomain.index = new BigInt(1)
-  rootDomain.roles = [creatorRoles.id]
-  rootDomain.timestamp = event.block.timestamp
-  rootDomain.save()
+  // let rootDomain = new Domain(event.params.colonyAddress.toHex() + '_1')
+  // rootDomain.colonyAddress = event.params.colonyAddress
+  // rootDomain.parent = event.params.colonyAddress
+  // rootDomain.index = new BigInt(1)
+  // rootDomain.timestamp = event.block.timestamp
+  // rootDomain.save()
 
   let colony = new Colony(event.params.colonyAddress.toHex())
   colony.index = event.params.colonyId
   colony.token = event.params.token.toHex()
-  colony.domains = [rootDomain.id]
   colony.timestamp = event.block.timestamp
   colony.save()
 
-  // ColonyTemplate.create(event.params.colonyAddress)
+  ColonyTemplate.bind(event.params.colonyAddress)
 }
 
 export function handleSkillAdded(event: SkillAdded): void {}

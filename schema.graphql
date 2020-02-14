@@ -1,16 +1,13 @@
 type User @entity {
   id: ID! # userAddress
-  ensName: String
+  ensName: String!
   timestamp: BigInt!
 }
 
 type Colony @entity {
   id: ID! # Address
-  ensName: String
-  orbitAddress: String
   index: BigInt!
-  token: String # Address
-  domains: [Domain!]!
+  token: String! # Address
   timestamp: BigInt!
 }
 
@@ -19,16 +16,15 @@ type Domain @entity {
   id: ID! # colonyAddress_domainId
   colonyAddress: Bytes!
   index: BigInt!
-  parent: Domain
-  roles: [ColonyRoles!]!
+  parent: Bytes!
   timestamp: BigInt!
 }
 
 # Should not be in root query
 type ColonyRoles @entity {
   id: ID! # colonyAddress_domainId_userAddress
-  user: User!
-  domain: Domain!
+  user: Bytes!
+  domain: String!
   administration: Boolean!
   timestamp: BigInt!
   # TODO: other roles
@@ -45,7 +41,7 @@ type Task @entity {
   id: ID!
   colonyAddress: Bytes!
   taskId: BigInt!
-  status: String
+  status: String!
   timestamp: BigInt!
 }
 
