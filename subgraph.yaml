@@ -41,10 +41,16 @@ templates:
         - Domain
         - Task
         - TaskPayout
+        - PayoutClaimed
+        - RewardPayoutClaimed
       abis:
         - name: IColony
           file: ./abis/IColony.json
       eventHandlers:
+        - event: ColonyInitialised(address,address)
+          handler: handleColonyInitialised
+        - event: ColonyFundsMovedBetweenFundingPots(indexed uint256,indexed uint256,uint256,address)
+          handler: handleColonyFundsMovedBetweenFundingPots  
         - event: TaskAdded(uint256)
           handler: handleTaskAdded
         - event: TaskPayoutSet(indexed uint256,uint8,address,uint256)
@@ -53,3 +59,7 @@ templates:
           handler: handleTaskFinalized
         - event: DomainAdded(uint256)
           handler: handleDomainAdded
+        - event: PayoutClaimed(indexed uint256,address,uint256)
+          handler: handlePayoutClaimed
+        - event: RewardPayoutClaimed(uint256,address,uint256,uint256)
+          handler: handleRewardPayoutClaimed    

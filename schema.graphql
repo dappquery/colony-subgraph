@@ -55,3 +55,40 @@ type TaskPayout @entity {
   amount: BigInt!
   timestamp: BigInt!
 }
+
+type ClaimedPayout @entity {
+  id: ID!
+  colonyAddress: Bytes!
+  fundingPotId: BigInt!
+  token: Bytes!
+  amount: BigInt!
+  timestamp: BigInt!
+}
+
+type ClaimedRewardPayout @entity {
+  id: ID!
+  colonyAddress: Bytes!
+  rewardPayoutId: BigInt!
+  user: Bytes!
+  fee: BigInt!
+  rewardRemainder: BigInt!
+  timestamp: BigInt!
+}
+
+type InitialisedColony @entity {
+  id: ID!
+  colonyAddress: Bytes!
+  colonyNetwork: Bytes!
+  token: Bytes!
+  timestamp: BigInt!
+}
+
+type ColonyFundsTransferBetweenFundingPots @entity {
+  id: ID!
+  colonyAddress: Bytes!
+  fromPot: BigInt!
+  toPot: BigInt!
+  amount: BigInt!
+  token: Bytes!
+  timestamp: BigInt!
+}

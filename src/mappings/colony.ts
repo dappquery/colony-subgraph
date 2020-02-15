@@ -32,9 +32,18 @@ import {
 } from '../../generated/templates/Colony/IColony'
 import { IColonyNetwork } from '../../generated/ColonyNetwork/IColonyNetwork'
 
-import { Colony, ColonyRoles, Domain, Task, TaskPayout } from '../../generated/schema'
+import { Colony, ColonyRoles, Domain, Task, TaskPayout, ClaimedPayout, ClaimedRewardPayout, InitialisedColony, ColonyFundsTransferBetweenFundingPots } from '../../generated/schema'
 
-export function handleColonyInitialised(event: ColonyInitialised): void {}
+export function handleColonyInitialised(event: ColonyInitialised): void {
+  let initialisedColony = new InitialisedColony(
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  )
+  initialisedColony.colonyAddress = event.address
+  initialisedColony.colonyNetwork = event.params.colonyNetwork
+  initialisedColony.token = event.params.token
+  initialisedColony.timestamp = event.block.timestamp
+  initialisedColony.save()
+}
 
 export function handleColonyBootstrapped(event: ColonyBootstrapped): void {}
 
@@ -64,7 +73,18 @@ export function handleColonyRoleSet(event: ColonyRoleSet): void {
 
 export function handleColonyFundsMovedBetweenFundingPots(
   event: ColonyFundsMovedBetweenFundingPots
-): void {}
+): void {
+  let colonyFundTransfer = new ColonyFundsTransferBetweenFundingPots(
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  )
+  colonyFundTransfer.colonyAddress = event.address
+  colonyFundTransfer.fromPot = event.params.fromPot
+  colonyFundTransfer.toPot = event.params.toPot
+  colonyFundTransfer.amount = event.params.amount
+  colonyFundTransfer.token = event.params.token
+  colonyFundTransfer.timestamp = event.block.timestamp
+  colonyFundTransfer.save()
+}
 
 export function handleColonyFundsClaimed(event: ColonyFundsClaimed): void {}
 
@@ -76,7 +96,24 @@ export function handleRewardPayoutCycleEnded(
   event: RewardPayoutCycleEnded
 ): void {}
 
-export function handleRewardPayoutClaimed(event: RewardPayoutClaimed): void {}
+/// @notice Event logged when reward payout is claimed
+/// @param rewardPayoutId The reward payout cycle id
+/// @param user The user address who received the reward payout
+/// @param fee The fee deducted from payout
+/// @param rewardRemainder The remaining reward amount paid out to user
+/// event RewardPayoutClaimed(uint256 rewardPayoutId, address user, uint256 fee, uint256 rewardRemainder);
+export function handleRewardPayoutClaimed(event: RewardPayoutClaimed): void {
+  let rewardPayoutClaimed = new ClaimedRewardPayout(
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  )
+  rewardPayoutClaimed.colonyAddress = event.address
+  rewardPayoutClaimed.rewardPayoutId = event.params.rewardPayoutId
+  rewardPayoutClaimed.user = event.params.user
+  rewardPayoutClaimed.fee = event.params.fee
+  rewardPayoutClaimed.rewardRemainder = event.params.rewardRemainder
+  rewardPayoutClaimed.timestamp = event.block.timestamp
+  rewardPayoutClaimed.save()
+}
 
 export function handleColonyRewardInverseSet(
   event: ColonyRewardInverseSet
@@ -133,7 +170,22 @@ export function handleTaskFinalized(event: TaskFinalized): void {
   task.save()
 }
 
-export function handlePayoutClaimed(event: PayoutClaimed): void {}
+/// @notice Event logged when a payout is claimed, either from a Task or Payment
+/// @param fundingPotId Id of the funding pot where payout comes from
+/// @param token Token of the payout claim
+/// @param amount Amount of the payout claimed, after network fee was deducted
+// event PayoutClaimed(uint256 indexed fundingPotId, address indexed token, uint256 amount);
+export function handlePayoutClaimed(event: PayoutClaimed): void {
+  let payoutClaimed = new ClaimedPayout(
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  )
+  payoutClaimed.colonyAddress = event.address
+  payoutClaimed.fundingPotId = event.params.fundingPotId
+  payoutClaimed.token = event.params.token
+  payoutClaimed.amount = event.params.amount
+  payoutClaimed.timestamp = event.block.timestamp
+  payoutClaimed.save()
+}
 
 export function handleTaskCanceled(event: TaskCanceled): void {}
 

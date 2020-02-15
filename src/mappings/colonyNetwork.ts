@@ -18,7 +18,7 @@ import {
 } from '../../generated/ColonyNetwork/IColonyNetwork'
 
 import { Colony, Domain, ColonyRoles, User } from '../../generated/schema'
-import { IColony as ColonyTemplate } from '../../generated/templates/Colony/IColony'
+import { Colony as ColonyTemplate } from '../../generated/templates'
 
 export function handleColonyNetworkInitialised(
   event: ColonyNetworkInitialised
@@ -59,7 +59,7 @@ export function handleColonyAdded(event: ColonyAdded): void {
   colony.timestamp = event.block.timestamp
   colony.save()
 
-  ColonyTemplate.bind(event.params.colonyAddress)
+  ColonyTemplate.create(event.params.colonyAddress)
 }
 
 export function handleSkillAdded(event: SkillAdded): void {}
