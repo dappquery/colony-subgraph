@@ -32,8 +32,8 @@ type ColonyRoles @entity {
 
 type Skill @entity {
   id: ID!
-  index: BigInt!
-  parent: Skill
+  skillId: BigInt!
+  parentSkillId: BigInt!
   timestamp: BigInt!
 }
 
@@ -90,5 +90,29 @@ type ColonyFundsTransferBetweenFundingPots @entity {
   toPot: BigInt!
   amount: BigInt!
   token: Bytes!
+  timestamp: BigInt!
+}
+
+type ClaimedColonyFunds @entity {
+  id: ID!
+  colonyAddress: Bytes!
+  token: Bytes!
+  fee: BigInt!
+  payoutRemainder: BigInt!
+  timestamp: BigInt!
+}
+
+type BriefSetTask @entity {
+  id: ID!
+  colonyAddress: Bytes!
+  taskId: BigInt!
+  specificationHash: Bytes!
+  timestamp: BigInt!
+}
+
+type CompletedTask @entity {
+  id: ID!
+  colonyAddress: Bytes!
+  taskId: BigInt!
   timestamp: BigInt!
 }

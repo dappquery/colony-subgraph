@@ -32,7 +32,7 @@ import {
 } from '../../generated/templates/Colony/IColony'
 import { IColonyNetwork } from '../../generated/ColonyNetwork/IColonyNetwork'
 
-import { Colony, ColonyRoles, Domain, Task, TaskPayout, ClaimedPayout, ClaimedRewardPayout, InitialisedColony, ColonyFundsTransferBetweenFundingPots } from '../../generated/schema'
+import { Colony, ColonyRoles, Domain, Task, TaskPayout, ClaimedPayout, ClaimedRewardPayout, InitialisedColony, ColonyFundsTransferBetweenFundingPots, ClaimedColonyFunds, BriefSetTask, CompletedTask } from '../../generated/schema'
 
 export function handleColonyInitialised(event: ColonyInitialised): void {
   let initialisedColony = new InitialisedColony(
@@ -86,7 +86,17 @@ export function handleColonyFundsMovedBetweenFundingPots(
   colonyFundTransfer.save()
 }
 
-export function handleColonyFundsClaimed(event: ColonyFundsClaimed): void {}
+export function handleColonyFundsClaimed(event: ColonyFundsClaimed): void {
+  let claimedColonyFunds = new ClaimedColonyFunds(
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  )
+  claimedColonyFunds.colonyAddress = event.address
+  claimedColonyFunds.token = event.params.token
+  claimedColonyFunds.fee = event.params.fee
+  claimedColonyFunds.payoutRemainder = event.params.payoutRemainder
+  claimedColonyFunds.timestamp = event.block.timestamp
+  claimedColonyFunds.save()
+}
 
 export function handleRewardPayoutCycleStarted(
   event: RewardPayoutCycleStarted
@@ -130,7 +140,16 @@ export function handleTaskAdded(event: TaskAdded): void {
   task.save()  
 }
 
-export function handleTaskBriefSet(event: TaskBriefSet): void {}
+export function handleTaskBriefSet(event: TaskBriefSet): void {
+  let briefSetTask = new BriefSetTask(
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  )
+  briefSetTask.colonyAddress = event.address
+  briefSetTask.taskId = event.params.taskId
+  briefSetTask.specificationHash = event.params.specificationHash
+  briefSetTask.timestamp = event.block.timestamp
+  briefSetTask.save()  
+}
 
 export function handleTaskDueDateSet(event: TaskDueDateSet): void {}
 
@@ -155,7 +174,15 @@ export function handleTaskDeliverableSubmitted(
   event: TaskDeliverableSubmitted
 ): void {}
 
-export function handleTaskCompleted(event: TaskCompleted): void {}
+export function handleTaskCompleted(event: TaskCompleted): void {
+  let completedTask = new CompletedTask(
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  )
+  completedTask.colonyAddress = event.address
+  completedTask.taskId = event.params.taskId
+  completedTask.timestamp = event.block.timestamp
+  completedTask.save()  
+}
 
 export function handleTaskWorkRatingRevealed(
   event: TaskWorkRatingRevealed

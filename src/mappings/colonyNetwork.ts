@@ -17,7 +17,7 @@ import {
   ColonyLabelRegistered
 } from '../../generated/ColonyNetwork/IColonyNetwork'
 
-import { Colony, Domain, ColonyRoles, User } from '../../generated/schema'
+import { Colony, Domain, ColonyRoles, User, Skill } from '../../generated/schema'
 import { Colony as ColonyTemplate } from '../../generated/templates'
 
 export function handleColonyNetworkInitialised(
@@ -62,7 +62,15 @@ export function handleColonyAdded(event: ColonyAdded): void {
   ColonyTemplate.create(event.params.colonyAddress)
 }
 
-export function handleSkillAdded(event: SkillAdded): void {}
+export function handleSkillAdded(event: SkillAdded): void {
+  let skill = new Skill(
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  )
+  skill.skillId = event.params.skillId
+  skill.parentSkillId = event.params.parentSkillId
+  skill.timestamp = event.block.timestamp
+  skill.save()
+}
 
 export function handleAuctionCreated(event: AuctionCreated): void {}
 

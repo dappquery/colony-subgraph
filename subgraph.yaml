@@ -17,6 +17,7 @@ dataSources:
       entities:
         - Colony
         - User
+        - Skill
       abis:
         - name: IColonyNetwork
           file: ./abis/IColonyNetwork.json
@@ -25,6 +26,8 @@ dataSources:
           handler: handleColonyAdded
         - event: UserLabelRegistered(indexed address,bytes32)
           handler: handleUserLabelRegistered
+        - event: SkillAdded(uint256,uint256)
+          handler: handleSkillAdded
       file: ./src/mappings/colonyNetwork.ts
 templates:
   - name: Colony
@@ -41,8 +44,13 @@ templates:
         - Domain
         - Task
         - TaskPayout
-        - PayoutClaimed
-        - RewardPayoutClaimed
+        - ClaimedPayout
+        - ClaimedRewardPayout
+        - InitialisedColony
+        - ColonyFundsTransferBetweenFundingPots
+        - ClaimedColonyFunds
+        - BriefSetTask
+        - CompletedTask
       abis:
         - name: IColony
           file: ./abis/IColony.json
@@ -50,11 +58,19 @@ templates:
         - event: ColonyInitialised(address,address)
           handler: handleColonyInitialised
         - event: ColonyFundsMovedBetweenFundingPots(indexed uint256,indexed uint256,uint256,address)
-          handler: handleColonyFundsMovedBetweenFundingPots  
+          handler: handleColonyFundsMovedBetweenFundingPots 
+        - event: ColonyFundsClaimed(address,uint256,uint256)
+          handler: handleColonyFundsClaimed   
         - event: TaskAdded(uint256)
           handler: handleTaskAdded
         - event: TaskPayoutSet(indexed uint256,uint8,address,uint256)
           handler: handleTaskPayoutSet
+        - event: TaskBriefSet(indexed uint256,bytes32)
+          handler: handleTaskBriefSet
+        - event: TaskCompleted(indexed uint256)
+          handler: handleTaskCompleted
+        - event: TaskWorkRatingRevealed(indexed uint256,uint8,uint8)
+          handler: handleTaskWorkRatingRevealed
         - event: TaskFinalized(indexed uint256)
           handler: handleTaskFinalized
         - event: DomainAdded(uint256)
